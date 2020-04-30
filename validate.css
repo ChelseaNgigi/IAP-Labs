@@ -1,0 +1,64 @@
+#user{
+  text-align: center;
+}
+#login{
+  text-align: center;
+  align-content: center;
+}
+#form_errors{
+  color: red;
+}
+input[type=text], select {
+    width: fit-content;
+  padding: 20px 20px;
+  margin: 8px 0;
+  margin-left:300px ;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+input[type=password], select {
+  width: fit-content;
+padding: 20px 20px;
+margin: 8px 0;
+margin-left:300px ;
+display: inline-block;
+border: 1px solid #ccc;
+border-radius: 4px;
+box-sizing: border-box;
+}
+.savebtn{
+  margin-left: 320px;
+}
+
+
+#table{
+  margin-left: 20px;
+}
+.table {
+font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+border-collapse: collapse;
+ margin-left: 20px;
+ width:90%;
+}
+
+.table td, .table th {
+border: 1px solid #ddd;
+
+ padding-bottom: 8px;
+ padding-top: 8px;
+}
+.table tr:nth-child(even){
+
+ background-color: #f2f2f2;}
+
+.table tr:hover {background-color: #ddd;}
+
+.table th {
+padding-top: 20px;
+padding-bottom: 20px;
+text-align: left;
+background-color: snow;
+color: gray;
+}

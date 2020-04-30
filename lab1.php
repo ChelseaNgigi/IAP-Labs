@@ -9,10 +9,23 @@ if(isset($_POST['btn-save'])){
     $first_name=$_POST['first_name'];
     $last_name=$_POST['last_name'];
     $city=$_POST['city_name'];
+    $username=$_POST['username'];
+    $password=$_POST['password'];
 //Create user object using constructor(To initialize the variables)
-$user=new User($first_name,$last_name,$city);
+$user=new User($first_name,$last_name,$city,$username,$password);
+if(!$user->validateForm()){
+    $user->createFormErrorSessions();
+    header("Refresh:0");
+    die();
+}
+else if($user->userExist()){
+    alert("Username already exists");
+    header("Refresh:0");
+    die();
+}
+else{
 $res=$user->save();
-
+}
 //Check if save operation is successful
 if($res)
 {
@@ -30,11 +43,25 @@ $con->closeDatabase();
 <html>
     <head>
         <title>Title goes here</title>
-        <link rel="stylesheet" type="text/css" href="lab1.css">
+        <script type="text/javascript" scr="validate.js"></script>
+        <link rel="stylesheet" type="text/css" href="validate.css">
     </head>
 <body>
-    <form method="POST">
+    <form method="POST" name="user_details" onsubmit="return validateForm()" action="<?=$_SERVER['PHP_SELF']?>">
         <table id ="user" action="<?=$_SERVER['PHP_SELF']?>">
+        <tr>
+            <td>
+                <div id="form-errors">
+                    <?php
+                    session_start();
+                    if(!empty($_SESSION['form_errors'])){
+                        echo " " .$_SESSION['form_errors'];
+                        unset($_SESSION['form_errors']);
+                    }
+                    ?>
+                    </div>
+                </td>
+                </tr>
             <tr>
                 <td><input type="text" name="first_name" required placeholder="First Name"/></td>
             </tr>
@@ -45,7 +72,16 @@ $con->closeDatabase();
                     <td><input type="text" name="city_name" placeholder="City"/></td>
              </tr>
              <tr>
+                    <td><input type="text" name="username" placeholder="Username"/></td>
+             </tr>
+             <tr>
+                    <td><input type="password" name="password" placeholder="Password"/></td>
+             </tr>
+             <tr>
                     <td><button type="submit"  class="savebtn" name="btn-save" ><strong>SAVE</strong></button></td>
+                </tr>
+                <tr>
+                    <td><a href="login.php">Login</a></td>
                 </tr>
 
         </table>
@@ -60,6 +96,8 @@ $con->closeDatabase();
             <th>First Name</th>
             <th>Last Name</th>
             <th>City</th>
+            <th>Username</th>
+            <th>Password</th>
 
             </tr>
 
@@ -67,7 +105,7 @@ $con->closeDatabase();
             //data retrieve code
 
 //Create user object using constructor(To initialize the variables)
-$userdetails=new User($first_name,$last_name,$city);
+$userdetails=new User($first_name,$last_name,$city,$username,$password);
 $result=$userdetails->readAll();
 $con->closeDatabase();
 //echo "</table>";            
