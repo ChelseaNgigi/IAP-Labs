@@ -58,6 +58,7 @@ $con->closeDatabase();
                         echo " " .$_SESSION['form_errors'];
                         unset($_SESSION['form_errors']);
                     }
+            
                     ?>
                     </div>
                 </td>
