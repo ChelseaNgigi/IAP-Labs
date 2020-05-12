@@ -63,6 +63,17 @@ public function getUserId()
 return $this->$user_id;
 }
 //Must define all methods in the crud interface because User class has implemented Crud
+public function userExist(){
+    $uname=$this->username;
+    $con=new DBConnector;
+    $result=mysqli_query($con->conn,"SELECT username FROM user WHERE username='$uname'");
+    if(mysqli_num_rows($result)>0){ 
+        $con->closeDatabase(); 
+        return true;    
+    }
+    return false;
+    
+}
 public function save()
 {
     $fn=$this->first_name;
@@ -71,11 +82,19 @@ public function save()
     $uname=$this->username;
     $this->hashPassword();
     $pass=$this->password;
-    $con=new DBConnector;
-    $res=mysqli_query($con->conn,"INSERT INTO user(first_name,last_name,user_city,username,password) VALUES ('$fn','$ln','$city','$uname','$pass')");
     //$sql="INSERT INTO user(first_name,last_name,user_city) VALUES ('$fn','$ln','$city')";
     //$res=mysqli_query(parent:$this->conn,$sql) or die("Error:".mysqli_error(parent:$this->conn));
+    if($this->userExist()==true){
+        echo "Username already exists";
+        header("Refresh:0");
+        die();   
+    
+    }
+    else{
+    $con=new DBConnector;
+    $res=mysqli_query($con->conn,"INSERT INTO user(first_name,last_name,user_city,username,password) VALUES ('$fn','$ln','$city','$uname','$pass')");
      return $res;
+    }
 }
 public function readAll()
 {
@@ -175,18 +194,10 @@ return $found;
         header("Location:lab1.php");
     
     }
-    public function userExist(){
-        $uname=$this->username;
-        $con=new DBConnector;
-        $exist=false;
-        $result=mysqli_query($con->conn,"SELECT username FROM user WHERE username=$uname");
-        if(mysqli_num_rows($result)>0){
-            $exist=true;
-        }
-      
+   
     
         
 
-    }
+    
 }
 ?>

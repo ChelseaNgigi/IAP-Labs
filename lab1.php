@@ -18,11 +18,6 @@ if(!$user->validateForm()){
     header("Refresh:0");
     die();
 }
-else if($user->userExist()){
-    alert("Username already exists");
-    header("Refresh:0");
-    die();
-}
 else{
 $res=$user->save();
 }
