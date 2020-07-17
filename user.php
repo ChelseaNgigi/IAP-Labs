@@ -6,18 +6,24 @@ include_once "DBConnector.php";
 
 
 
+
 class User extends DBConnector implements Crud,Authenticator 
 {
 private $user_id;
 private $first_name;
 private $last_name;
 private $city_name;
+private $username;
+private $password;
+private $p_picture;
+private $utc_timestamp;
+private $offset;
 
 
 
 //Class constructors-initialize our values 
 //Member variables cannot be instantiated from elsewhere(private)
-function __construct($first_name,$last_name,$city_name,$username,$password)
+function __construct($first_name,$last_name,$city_name,$username,$password,$p_picture,$utc_timestamp,$offset)
 {
    
     $this->first_name=$first_name;
@@ -25,6 +31,9 @@ function __construct($first_name,$last_name,$city_name,$username,$password)
     $this->city_name=$city_name;
     $this->username=$username;
     $this->password=$password;
+    $this->p_picture=$p_picture;
+    $this->utc_timestamp=$utc_timestamp;
+    $this->offset=$offset;
 }
 //static method -to access it with class rather than an object
 public static function create()
@@ -62,6 +71,26 @@ public function getUserId()
 {
 return $this->$user_id;
 }
+//utc_time setter
+public function setUtcTimestamp($utc_timestamp)
+{
+$this->utc_timestamp=$utc_timestamp;
+}
+//utc_time getter
+public function getUtcTimestamp()
+{
+return $this->utc_timestamp;
+}
+//offset setter
+public function setOffset($time_zone_offset)
+{
+$this->offset=$offset;
+}
+//username getter
+public function getOffset()
+{
+return $this->offset;
+}
 //Must define all methods in the crud interface because User class has implemented Crud
 public function userExist(){
     $uname=$this->username;
@@ -71,6 +100,7 @@ public function userExist(){
         $con->closeDatabase(); 
         return true;    
     }
+   
     return false;
     
 }
@@ -82,19 +112,16 @@ public function save()
     $uname=$this->username;
     $this->hashPassword();
     $pass=$this->password;
+    $pic=$this->p_pic;
+    $utc=$this->utc_timestamp;
+    $off=$this->time_zone_offset;
     //$sql="INSERT INTO user(first_name,last_name,user_city) VALUES ('$fn','$ln','$city')";
     //$res=mysqli_query(parent:$this->conn,$sql) or die("Error:".mysqli_error(parent:$this->conn));
-    if($this->userExist()==true){
-        echo "Username already exists";
-        header("Refresh:0");
-        die();   
     
-    }
-    else{
     $con=new DBConnector;
-    $res=mysqli_query($con->conn,"INSERT INTO user(first_name,last_name,user_city,username,password) VALUES ('$fn','$ln','$city','$uname','$pass')");
-     return $res;
-    }
+    $res=mysqli_query($con->conn,"INSERT INTO `user`(`first_name`, `last_name`, `user_city`, `username`, `password`, `imgFile`, `timestamp`, `time_zone_offset`) VALUES ('$fn','$ln','$city','$uname','$pass','$target_file','$utc','$off')");
+    return $res;
+    
 }
 public function readAll()
 {
@@ -111,6 +138,9 @@ public function readAll()
         echo "<td>" . $row['user_city'] . "</td>";
         echo "<td>" . $row['username'] . "</td>";
         echo "<td>" . $row['password'] . "</td>";
+        echo "<td>" . $row['imgFile'] . "</td>";
+        echo "<td>" . $row['utc_timestamp'] . "</td>";
+        echo "<td>" . $row['offset'] . "</td>";
         echo "</tr>";
     
     }
