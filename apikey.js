@@ -11,7 +11,7 @@ $(document).ready(function(){
             success: function(data){
                 if(data['success'] == 1){
                     //setting key in textarea
-                
+                git
                     $('#api_key').val(data['message']);
 
                 }else{
