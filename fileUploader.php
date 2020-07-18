@@ -74,7 +74,7 @@ class  FileUploader{
     }
 
     public function moveFile(){}
-    //Checks if image file is a actual image or fake image file
+    
     public function fileTypeIsCorrect(){
         
         $check = getimagesize($_FILES["profilePic"]["tmp_name"]);
@@ -88,7 +88,7 @@ class  FileUploader{
             return false;
         }
     }
-    //checks if file size is allowed
+    //checks if file size
     public function fileSizeIsCorrect(){
         $this->file_size = $_FILES["profilePic"]["size"];
         if ($this->getFileSize() > self::$size_limit) {
